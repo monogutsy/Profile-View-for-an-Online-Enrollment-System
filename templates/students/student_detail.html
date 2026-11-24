@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% block title %}{{ student.full_name }} | Online Enrollment System{% endblock %}
+{% block content %}
+<a class="back-link" href="{% url 'students:student_list' %}?section={{ student.class_section|urlencode }}">Back to
+    Student List</a>
+<div class="profile-heading">
+    <h1>{{ student.full_name }}</h1>
+    <p class="subtitle">{{ student.student_number }} <span class="metadata-divider">|</span> {{ student.class_section }}
+    </p>
+</div>
+
+<div class="profile-panel">
+    <section class="information-section" aria-labelledby="personal-heading">
+        <h2 id="personal-heading">Personal Information</h2>
+        <dl class="information-grid">
+            <div>
+                <dt>Student number</dt>
+                <dd>{{ student.student_number }}</dd>
+            </div>
+            <div>
+                <dt>Full name</dt>
+                <dd>{{ student.full_name }}</dd>
+            </div>
+            <div>
+                <dt>Date of birth</dt>
+                <dd>{{ student.date_of_birth|date:"F j, Y"|default:"Not provided" }}</dd>
+            </div>
+            <div>
+                <dt>Email address</dt>
+                <dd>{{ student.email|default:"Not provided" }}</dd>
+            </div>
+            <div>
+                <dt>Contact number</dt>
+                <dd>{{ student.contact_number|default:"Not provided" }}</dd>
+            </div>
+            <div>
+                <dt>Home address</dt>
+                <dd class="address">{{ student.home_address|default:"Not provided" }}</dd>
+            </div>
+        </dl>
+    </section>
+    <section class="information-section" aria-labelledby="background-heading">
+        <h2 id="background-heading">Background Information</h2>
+        <dl class="information-grid">
+            <div>
+                <dt>Course</dt>
+                <dd>{{ student.course }}</dd>
+            </div>
+            <div>
+                <dt>Year level / Section</dt>
+                <dd>Year {{ student.year_level }} / {{ student.class_section }}</dd>
+            </div>
+            <div>
+                <dt>Previous school</dt>
+                <dd>{{ student.previous_school|default:"Not provided" }}</dd>
+            </div>
+            <div>
+                <dt>Guardian name</dt>
+                <dd>{{ student.guardian_name|default:"Not provided" }}</dd>
+            </div>
+            <div>
+                <dt>Guardian contact number</dt>
+                <dd>{{ student.guardian_contact_number|default:"Not provided" }}</dd>
+            </div>
+        </dl>
+    </section>
+</div>
+{% endblock %}

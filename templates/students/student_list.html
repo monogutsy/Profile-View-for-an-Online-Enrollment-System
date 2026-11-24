@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block title %}Students | Online Enrollment System{% endblock %}
+{% block content %}
+<div class="page-heading">
+    <div>
+        <h1>Students</h1>
+        <p class="subtitle">View students enrolled in this class.</p>
+    </div>
+    {% if selected_section %}<p class="section-label">Class / Section <strong>{{ selected_section }}</strong></p>{% endif %}
+</div>
+
+{% if sections|length > 1 %}
+<form class="section-filter" method="get">
+    <label for="section">Class / Section</label>
+    <select name="section" id="section">
+        {% for section in sections %}
+        <option value="{{ section }}" {% if section == selected_section %}selected{% endif %}>{{ section }}</option>
+        {% endfor %}
+    </select>
+    <button class="button" type="submit">View class</button>
+</form>
+{% endif %}
+
+<div class="table-panel">
+    <div class="table-scroll" role="region" aria-label="Class student list" tabindex="0">
+        <table>
+            <caption class="visually-hidden">Students{% if selected_section %} in {{ selected_section }}{% endif %}</caption>
+            <thead>
+                <tr>
+                    <th scope="col">Student No.</th>
+                    <th scope="col">Full Name</th>
+                    <th scope="col">Course / Year Level</th>
+                    <th scope="col">Section</th>
+                    <th scope="col">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for student in students %}
+                <tr>
+                    <td class="student-number">{{ student.student_number }}</td>
+                    <td><a class="student-name" href="{% url 'students:student_detail' student.pk %}?section={{ selected_section|urlencode }}">{{ student.full_name }}</a></td>
+                    <td>{{ student.course }}<span class="cell-secondary">Year {{ student.year_level }}</span></td>
+                    <td>{{ student.class_section }}</td>
+                    <td><a class="profile-link" aria-label="View Profile for {{ student.full_name }}" href="{% url 'students:student_detail' student.pk %}?section={{ selected_section|urlencode }}">View Profile</a></td>
+                </tr>
+                {% empty %}
+                <tr><td class="empty-state" colspan="5">No students found for this class.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <p class="table-footer">{{ students|length }} student{{ students|length|pluralize }}{% if selected_section %} in this class{% endif %}</p>
+</div>
+{% endblock %}
